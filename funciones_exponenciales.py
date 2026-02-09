@@ -1,19 +1,28 @@
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # funcion original
 def f(x):
-    return ( 5*np.sin(x)**5 ) + ( 3*x**4 ) + ( 10*np.cos(x)**3 ) + ( 5*x**2 ) + x + 30
+    return (
+        4*x**5 - 7*x**4 +
+        3*x**3 + 6*x**2 - 
+        2*x + 9
+        )
     
 # primera derivada
 def fPrima(x):
-    return ( 12*x**3 ) + ( 10*x ) + ( 25*np.sin(x)**4 * np.cos(x) ) - ( 30*np.cos(x)**2 * np.sin(x) ) + 1
+    return (
+        20*x**4 - 28*x**3 + 
+        9*x**2 + 12*x - 2
+        )
 
 # segunda derivada
 def fDoblePrima(x):
-    return ( 100*np.sin(x)**3*np.cos(x)**2 ) - ( 25*np.sin(x)**5 ) + ( 36*x**2 ) + ( 60*np.cos(x)*np.sin(x)**2 ) - ( 30*np.cos(x)**3 ) + 10
-    
+    return (
+        80*x**3 - 84*x**2 + 
+        18*x + 12
+        )
+
 # variable para el intervalo (valores que va a tomar x para obtener el eje y)
 t = np.arange(-1, 1, 0.03)
 
