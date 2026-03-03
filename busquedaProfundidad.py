@@ -2,7 +2,7 @@
 """
 Created on Fri Mar 26 02:10:07 2021
 
-@author: GabrielAsus 
+@author: GabrielAsus
 """
 
 import pygame as pg
@@ -23,13 +23,21 @@ class deepSearch(object):
         startNode=MapaNode(start[::-1])
         endNode=MapaNode(end[::-1])
         path=[]
+        
+        # se cambia la pila por fila
         fila= deque()
         fila.append(startNode)
+        
+        
         mapaRows,mapaCols=np.shape(mapa)
         visited=np.zeros(mapa.shape)
         visited[start[1]][start[0]]=1
         while(len(fila)!=0 ):
+            
+            # uso de .popleft()
+            # quita el primer elemento del arreglo
             currentNode=fila.popleft()
+            
             if currentNode==endNode:
                 break
             #-------------
@@ -99,10 +107,15 @@ smallfont = pg.font.SysFont('comicsans', 30)
 text = smallfont.render('Search' , True , RED)
 #tamaño en pixeles de la celda o el cuadro
 tile_size = 10
+
 #punto incial en formato columa,fila (x,y)
-start= [20,5]
+start= [29,7]
+
+
 #punto final en formato columa,fila (x,y)
 goal= [45,40]
+
+
 #tamaño para el espacio para el boton
 topPadding=50
 #creo el objeto para la busqueda en profundidad
