@@ -55,8 +55,6 @@ class aplicacion():
         self.frameDeAbajo = Frame(self.raiz)
         self.frameDeAbajo.pack(side = BOTTOM)
         
-        # campos de texto
-        
         self.bsalir = Button(self.frameDeAbajo, text = "Salir", command = self.raiz.destroy)
         self.bsalir.pack(side = LEFT)
 
