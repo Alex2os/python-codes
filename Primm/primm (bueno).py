@@ -108,7 +108,63 @@ plt.show()
 def DistanciaEuclidiana(x1, x2):
     return np.sqrt(np.sum((x1 - x2)**2))
 
+# funcion para saber si dos vertices o nodos se pueden conectar
+# lo que se hace en este caso es que en vez de checar posiciones entre los nodos, se checa toda la linea posible desde un nodo a-
+# otro. lo anterior se hace ya que hay problemas si solo se checan ciertos puntos, por lo que mejor es usar un algoritmo para-
+# poder checar la linea completa
 
+# usamos linspace, lo cual hace que sea bastante facil obtener una linea recta entre dos puntos, y simplemente podemos ir-
+# iterando e ir checando cada punto para estar seguros de que todos los puntos y la linea es correcta para poder conectar-
+# dos nodos
+def VerticesConectados(mascara, x1, x2):
+    # el orden de estas variables importa bastante. tiene que ser como estan
+    vertice_y1, vertice_x1 = x1
+    vertice_y2, vertice_x2 = x2
+    
+    puntos_linea = 0
+    
+    # sacamos el numero de puntos maximo entre los dos vertices, esto para que con linspace tengamos este numero de puntos para-
+    # iterar
+    # como no se puede usar la funcion max(), se saca manualmente esta parte
+    diferencia_y = abs(vertice_y2 - vertice_y1) + 1
+    diferencia_x = abs(vertice_x2 - vertice_x1) + 1
+
+    if diferencia_y > diferencia_x:
+        puntos_linea = diferencia_y
+    else:
+        puntos_linea = diferencia_x
+    
+    # usamos linspace para generar dichos puntos a traves de los dos vertices, usando la variable de pasos 
+    linea_x = np.linspace(vertice_x1, vertice_x2, puntos_linea, dtype=int)
+    linea_y = np.linspace(vertice_y1, vertice_y2, puntos_linea, dtype=int)
+    
+    # despues podemos iterar a traves de los puntos y checar las condiciones para decidir si devolver false o true.
+    for punto_x, punto_y in zip(linea_x, linea_y):
+        
+        # si el punto que estamos checando se sale del limite devolvemos false, o si es que es igual al tamaño de la mascara.shape-
+        # respectivamente para tanto x como para y
+        if(punto_x < 0 or punto_x >= mascara.shape[1]):
+            return False
+        
+        if(punto_y < 0 or punto_y >= mascara.shape[0]):
+            return False
+        
+        # si el punto de la mascara es cero (negro) se devuelve falso
+        if mascara[punto_y, punto_x] == 0:
+            return False
+            
+    return True
+
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    
 
 
 
