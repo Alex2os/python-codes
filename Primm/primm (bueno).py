@@ -152,9 +152,40 @@ def VerticesConectados(mascara, x1, x2):
         # si el punto de la mascara es cero (negro) se devuelve falso
         if mascara[punto_y, punto_x] == 0:
             return False
-            
+        
+    # devolvemos true si pasa todos los puntos de control
     return True
 
+# podemos usar una funcion tambien para crear las conexiones validas, como se vio en el algoritmo de primm.
+# basicamente se hacen las conexiones entre los nodos o vertices con su costo o peso correspondiente
+# de esta manera el algoritmo de primm mas tarde puede usar estos valores para funcionar apropiadamente
+
+# recibimos la mascara y los vertices, para primero comprobar si es una conexion valida y luego para sacar la distancia euclidiana-
+# si es que se pueden conectar. devuelve la lista completa de aristas en este caso, con peso y la conexion entre vertices.
+def CrearAristas(mascara, vertices):
+    
+    # lista para devolver todos los aristas una vez armados del mapa y vertices actuales
+    aristas = []
+    
+    # basicamente revisamos si dos vertices ([i] y [j]) se pueden conectar de forma correcta a traves de la funcion de VerticesConectados
+    # despues de ello, si es que se puede se saca la distancia euclidiana y se añade la conexion a los aristas.
+    # se repite hasta que no queden vertices en la lista de vertices que se envia
+    for i in range(len(vertices)):
+        for j in range(i + 1, len(vertices)):
+
+            if VerticesConectados(mascara, vertices[i], vertices[j]):
+                costo = DistanciaEuclidiana(vertices[i], vertices[j])
+                aristas.append((costo, i, j))
+    
+    # ordenamos los vertices por peso, usando sort y especificando el index 0 [0] que es donde se contienen los pesos
+    aristas.sort(key=lambda x: x[0])
+    
+    return aristas
+
+# por ultimo podemos definir la funcion de primm para realizar el arbol de expansion minima.
+def Primm():
+    print("")
+    
         
         
         
