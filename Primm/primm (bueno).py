@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 # cargamos la imagen del mapa y el archivo .npy de dicho mapa
 
-Mapa = "mapa1.png"
-Vertices = "verticeMapa1.npy"
+Mapa = "mapaChiquito.png"
+Vertices = "verticeChiquito.npy"
 
 MapaImagen = cv2.imread(Mapa)
 MapaVertices = np.load(Vertices)
@@ -183,8 +183,56 @@ def CrearAristas(mascara, vertices):
     return aristas
 
 # por ultimo podemos definir la funcion de primm para realizar el arbol de expansion minima.
-def Primm():
-    print("")
+# en este caso se le envian los vertices y las aristas previamente definidas. lo que se devuelve en este caso es el arbol de-
+# expansion minima
+def Primm(vertices, aristas):
+    
+    # arreglo para guardar el arbol resultante
+    arbol_expansion_minima = []
+    # vertices visitados hasta el momento
+    vertices_visitados = [0] # inicializamos la variable para que no haya problemas en la iteracion
+    
+    # usamos el tamaño de los arreglos para la condicion de parar
+    # si ya se visitaron todos los nodos, entonces se detiene el while
+    while len(vertices_visitados) < len(vertices):
+        
+        vertice_agregado = False
+        
+        # sacamos todo lo que necesitamos de las aristas. en este caso es el costo y los dos vertices o nodos que se conectan
+        
+        # basicamente como ya tenemos las aristas ordenadas por el costo de menor a mayor, es por esto que se mete el primer-
+        # vertice cada iteracion y se le hace break con los ifs, ademas de actualizar las variables de costo, arbol de expansion-
+        # y los vertices visitados.
+        for costo, x1, x2 in aristas:
+        
+            # si x1 ya esta dentro y x2 no
+            if(x1 in vertices_visitados and x2 not in vertices_visitados):
+                arbol_expansion_minima.append([costo, x1, x2])
+                vertices_visitados.append(x2)
+                vertice_agregado = True
+                break
+            
+            # si x2 ya esta dentro y x1 no
+            if(x2 in vertices_visitados and x1 not in vertices_visitados):
+                arbol_expansion_minima.append([costo, x1, x2])
+                vertices_visitados.append(x1)
+                vertice_agregado = True
+                break
+            
+        # si por alguna razon no se pudo conectar un vertice, se le hace break al while y regresa la lista como esta.
+        if(not vertice_agregado):
+            break 
+    
+    return arbol_expansion_minima
+    
+        
+            
+            
+            
+            
+        
+    
+    
     
         
         
