@@ -4,8 +4,20 @@ import matplotlib.pyplot as plt
 
 # cargamos la imagen del mapa y el archivo .npy de dicho mapa
 
-Mapa = "mapa2.png"
-Vertices = "verticeMapa2.npy"
+mapa_numero = 3
+
+Mapa = ""
+Vertices = ""
+
+if(mapa_numero==0):
+    Mapa = "mapaChiquito.png"
+    Vertices = "verticeChiquito.npy"
+else:
+    Mapa = "mapa" + str(mapa_numero) + ".png"
+    Vertices = "verticeMapa" + str(mapa_numero) + ".npy"
+
+# Mapa = "mapa1.png"
+# Vertices = "verticeMapa1.npy"
 
 MapaImagen = cv2.imread(Mapa)
 MapaVertices = np.load(Vertices)
@@ -60,8 +72,12 @@ MascaraMapa = CrearMascara(ImagenRGB, ColoresMascara)
 
 # antes de mostrar la mascara o usarla la limpiamos para que se vea bien. en este caso usamos las siguientes funciones:
 
-# creamos un kernel de 3x3 para limpiar la mascara.
-kernel = np.ones((3, 3), np.uint8)
+# creamos un kernel de 11x11 para limpiar la mascara.
+# en este caso se intento con un kernel de 3x3, pero al final se opto por uno de 11x11-
+# mas que nada para limpiar de mejor manera la mascara cuando se usa el mapa2, de todas-
+# formas todavia hay que ver si se cambia a 3x3 o se deja de 11x11 al final, pero-
+# es funcional con la de 11x11 con todos los mapas.
+kernel = np.ones((11, 11), np.uint8)
 
 # despues le podemos aplica morphologyEx para ayudar a pulir nuestra mascara, usando morph_close para poder cerrar algunas partes negras en la mascara y que sean blancas 
 MascaraMapa = cv2.morphologyEx(MascaraMapa, cv2.MORPH_CLOSE, kernel, iterations=2)
@@ -103,7 +119,6 @@ plt.title("Mapa original (vértices)")
 plt.axis("off")
 
 plt.show()
-
 
 # ahora podemos empezar con las funciones para realizar el arbol de expansion minima
 
@@ -228,35 +243,34 @@ def Primm(vertices, aristas):
     
     return arbol_expansion_minima
     
+# despues de todos los algoritmos/funciones podemos declarar nuestro arbol generado,-
+# primero obteniendo los aristas del mapa y usandolos con primm.
 AristasMapa = CrearAristas(MascaraMapa, MapaVertices)
-
 ArbolGenerado = Primm(MapaVertices, AristasMapa)
 
-# mostramos el arbol de expansion minima en el mapa original (ARREGLAR)
+# mostramos el arbol de expansion minima en el mapa original
 plt.figure(figsize=(8, 8))
 plt.imshow(ImagenRGB)
 
-color_arbol = "red"
-
+# obtenemos cada variable de cada indice del arbol generado y lo usamos para plotear-
+# las aristas, formando asi el arbol de expansion minima.
 for costo, x1, x2 in ArbolGenerado:
     
     vertice_y1, vertice_x1 = MapaVertices[x1]
     vertice_y2, vertice_x2 = MapaVertices[x2]
     
+    # usamos los vertices y especificamos color y size
     plt.plot(
         [vertice_x1, vertice_x2],
         [vertice_y1, vertice_y2],
-        color=color_arbol,
+        color="red",
         linewidth=2
     )
 
-plt.scatter(MapaVertices[:, 1], MapaVertices[:, 0], s=30, color=color_arbol)
+# finalmente podemos hacer un scatter con todos los vertices para completar nuestro arbol.
+plt.scatter(MapaVertices[:, 1], MapaVertices[:, 0], s=30, color="black")
 
-for i in range(len(MapaVertices)):
-    y, x = MapaVertices[i]
-    plt.text(x + 3, y + 3, str(i), fontsize=8, color=color_arbol)
-
-plt.title("Árbol de expansión mínima")
+plt.title("Árbol de expansión mínima (Primm)")
 plt.axis("off")
 plt.show()
 
@@ -278,6 +292,3 @@ plt.show()
     
     
     
-
-
-
